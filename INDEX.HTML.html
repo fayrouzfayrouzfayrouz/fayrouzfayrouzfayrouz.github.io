@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategic Wind Logistics Master Plan: Egypt Implementation</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- Chosen Palette: DHL Corporate & Energy -->
+    <!-- Primary Blue: #0057D9 | Teal: #00C2CB | Yellow: #FFCC00 | Danger: #EF4444 -->
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            max-height: 400px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 4px solid transparent;
+        }
+        .card-blue { border-left-color: #0057D9; }
+        .card-teal { border-left-color: #00C2CB; }
+        .card-yellow { border-left-color: #FFCC00; }
+        .card-red { border-left-color: #EF4444; }
+
+        .process-dot {
+            position: absolute;
+            left: -0.6rem;
+            top: 0;
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 50%;
+            background: #0057D9;
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px #0057D9;
+        }
+        .kpi-bar-bg {
+            background-color: #e2e8f0;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        .escalation-box {
+            position: relative;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .escalation-badge {
+            position: absolute;
+            top: -10px;
+            left: 1rem;
+            background: #0057D9;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+        }
+        .tab-button.active {
+            background-color: #ffffff;
+            color: #0057D9;
+            border-bottom: 3px solid #FFCC00;
+        }
+        .accordion-header {
+            cursor: pointer;
+            padding: 0.75rem 1rem;
+            background-color: #f8fafc;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: background-color 0.15s;
+        }
+        .accordion-header:hover {
+            background-color: #e2e8f0;
+        }
+        .accordion-content {
+            padding: 0.5rem 1rem;
+            background-color: #ffffff;
+            border-left: 3px solid #00C2CB;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-[#0057D9] to-[#003380] text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <h1 class="text-2xl md:text-3xl font-black tracking-tight">WIND LOGISTICS <span class="text-[#FFCC00]">MASTER PLAN</span></h1>
+            <p class="text-xs md:text-sm text-blue-200 uppercase tracking-widest font-medium">Interactive Report</p>
+        </div>
+    </header>
+
+    <!-- Tabbed Navigation -->
+    <nav class="sticky top-[72px] bg-slate-200 shadow-md z-40">
+        <div class="max-w-7xl mx-auto flex overflow-x-auto">
+            <button class="tab-button active flex-1 md:flex-none px-6 py-3 text-sm font-bold transition duration-150" data-tab="strategy"><i class="fas fa-sitemap mr-2"></i> Strategy & Context (1, 16, 18)</button>
+            <button class="tab-button flex-1 md:flex-none px-6 py-3 text-sm font-bold transition duration-150" data-tab="process"><i class="fas fa-route mr-2"></i> Process & Risk (2-6)</button>
+            <button class="tab-button flex-1 md:flex-none px-6 py-3 text-sm font-bold transition duration-150" data-tab="execution"><i class="fas fa-cogs mr-2"></i> Execution & Metrics (7-11, 15, 17)</button>
+            <button class="tab-button flex-1 md:flex-none px-6 py-3 text-sm font-bold transition duration-150" data-tab="lifecycle"><i class="fas fa-recycle mr-2"></i> Lifecycle & Governance (12-14)</button>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-8 space-y-16">
+
+        <!-- ========================================== -->
+        <!-- TAB 1: STRATEGY & CONTEXT  -->
+        <!-- ========================================== -->
+        <div class="tab-content" id="tab-strategy">
+            <h2 class="text-2xl font-black mb-6 text-[#0057D9]"><i class="fas fa-chart-area mr-2"></i> Phase I: Strategic Context & Positioning (1, 16, 18)</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!--  Industry Context (Detailed) -->
+                <div class="card card-blue p-6 lg:col-span-2">
+                    <h3 class="text-xl font-bold mb-4 flex items-center text-[#0057D9]">
+                        <span class="bg-blue-100 text-[#0057D9] w-8 h-8 flex items-center justify-center rounded-full mr-3 text-sm font-bold">1</span>
+                        Industry & Project Context Overview
+                    </h3>
+                    <div class="chart-container mb-4">
+                        <canvas id="regionalContextChart"></canvas>
+                    </div>
+                    <div class="text-sm space-y-3">
+                        <p><strong>Egypt Status:</strong> Rapid expansion with $\sim 1.9$ GW installed capacity (end-2024). Major projects ($\sim 650$ MW) reached commissioning in mid-2025. National grid upgrades are a recognized bottleneck, impacting delivery schedules.</p>
+                        <p><strong>Morocco (Benchmark):</strong> North-African leader with $\sim 2.3-2.4$ GW capacity. Provides useful regional lessons in planning and port handling.</p>
+                        <p><strong>Algeria (Emerging):</strong> Low rollout ($\sim 590$ MW as of 2023). Logistics needs are smaller scale but lack heavy-lift experience.</p>
+                    </div>
+                </div>
+                
+                <!-- PESTEL Analysis -->
+                <div class="card card-red p-6">
+                    <h3 class="text-xl font-bold mb-4 flex items-center text-[#EF4444]">
+                        <span class="bg-red-100 text-[#EF4444] w-8 h-8 flex items-center justify-center rounded-full mr-3 text-sm font-bold">16</span>
+                        PESTEL Analysis
+                    </h3>
+                    <div class="chart-container" style="height: 250px;">
+                        <canvas id="pestelChart"></canvas>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-2 text-center">
+                        Highest risk factors are Legal (Customs, Permits) and Economic (Currency/Inflation) volatility.
+                    </p>
+                </div>
+            </div>
+
+            <!-- SWOT -->
+            <div class="card card-teal p-6 mb-6">
+                <h3 class="text-xl font-bold mb-4 flex items-center text-[#00C2CB]">
+                    <span class="bg-teal-100 text-[#00C2CB] w-8 h-8 flex items-center justify-center rounded-full mr-3 text-sm font-bold">18</span>
+                    SWOT Analysis
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
+                    <div class="p-3 bg-green-50 border-l-4 border-green-500 rounded"><strong class="text-green-800">Strengths:</strong> Global DHL Network, established Port relationships.</div>
+                    <div class="p-3 bg-red-50 border-l-4 border-red-500 rounded"><strong class="text-red-800">Weaknesses:</strong> Local specialized trailer shortage, dependence on manual processes.</div>
+                    <div class="p-3 bg-blue-50 border-l-4 border-blue-500 rounded"><strong class="text-blue-800">Opportunities:</strong> Green Hydrogen scale-up, MoUs for new projects (500 MW+).</div>
+                    <div class="p-3 bg-orange-50 border-l-4 border-orange-500 rounded"><strong class="text-orange-800">Threats:</strong> Currency devaluation (EGP), Grid constraints/bottlenecks.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 2: PROCESS & RISK  -->
+        <!-- ========================================== -->
+        <div class="tab-content hidden" id="tab-process">
+            <h2 class="text-2xl font-black mb-6 text-[#0057D9]"><i class="fas fa-route mr-2"></i> Phase II: Process Mapping & Risk Assessment </h2>
+
+            <!-- End-to-End Process Map -->
+            <div class="card card-blue p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4 flex items-center text-[#0057D9]">
+                    <span class="bg-blue-100 text-[#0057D9] w-8 h-8 flex items-center justify-center rounded-full mr-3 text-sm font-bold">2</span>
+                    End-to-End Process Map 
+                </h3>
+                <div class="space-y-4">
+                    <div class="accordion-header flex justify-between items-center text-sm font-bold" data-target="process_detail">
+                        <span>Click to view 10-Step Onshore Wind Farm Process Flow</span>
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </div>
+                    <div class="accordion-content hidden" id="process_detail">
+                        <ol class="list-decimal pl-5 text-sm space-y-2">
+                            <li><strong>Project Inception & Procurement:</strong> Tendering, OEM selection (Vestas, SG), Incoterms, and delivery schedule finalization.</li>
+                            <li><strong>Pre-shipment Engineering & Route Survey:</strong> Detailed civil engineering survey (quay strength, bridge loadings, road obstacles). Certified engineers and local authority permits are required.</li>
+                            <li><strong>Manufacturing & QA (Origin):</strong> Staging, packaging for OOG, and lift plan provision by OEM (packs lists, tractor/trailer booking).</li>
+                            <li><strong>Sea Freight:</strong> Chartering heavy-lift vessels, sequencing arrivals (blades/nacelles), and securing berth slots (Sokhna/Adabiya). Quay load/storage audited.</li>
+                            <li><strong>Port Receipt & Customs Clearance:</strong> Customs dossier prep (ACI, permits, CoO), bonded storage, and inspections (misclassification risk).</li>
+                            <li><strong>Inland Transport & Escort:</strong> OOG trailers, multi-axle lines, night movements, temporary roadworks (remove signs, culverts), police escorts.</li>
+                            <li><strong>On-site Handling & Installation:</strong> Crawler cranes, sequential installation, local workforce, tooling/spares availability.</li>
+                            <li><strong>Commissioning / Spares Pipeline:</strong> Establish 24/7 spares pipeline (airfreight/local warehouse), tooling teams, and planned maintenance.</li>
+                            <li><strong>Operations, Maintenance & Reverse Logistics:</strong> Scheduled/unscheduled repairs, long-term decommissioning planning, blade disposal routing.</li>
+                            <li><strong>End-of-life (Decommissioning):</strong> Dismantling, component segregation, transport to recyclers (cost often underestimated).</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!--  Shipping & Risk Assessment -->
+                <div class="card card-red p-6">
+                    <h3 class="text-xl font-bold mb-4 flex items-center text-[#EF4444]">
+                        <span class="bg-red-100 text-[#EF4444] w-8 h-8 flex items-center justify-center rounded-full mr-3 text-sm font-bold">3</span>
+                        Shipping & Project-Cargo Risk Assessment
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="accordion-header flex justify-between items-center text-sm font-bold" data-target="risk_detail">
+                            <span> Risks & Practical Mitigations</span>
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </div>
+                        <div class="accordion-content hidden" id="risk_detail">
+                            <ul class="list-disc pl-5 text-sm space-y-2">
+                                <li><strong>Risk 1: Port Constraints / Timing.</strong> (Mitigation: Early port pre-bookings, quay audits, pre-staging yards.)</li>
+                                <li><strong>Risk 2: Road OOG Restrictions / Last-Mile Failure.</strong> (Mitigation: Local road reinforcement plans, pre-works funding.)</li>
+                                <li><strong>Risk 3: Grid Interconnection Delay.</strong> (Mitigation: Vendor coordination on delivery windows, holdback strategies.)</li>
+                                <li><strong>Risk 4: Customs / Documentation Errors.</strong> (Mitigation: Pre-clearing customs, using bonded regimes.)</li>
+                                <li><strong>Risk 5: Spare Parts Lead-time.</strong> (Mitigation: On-site spare tool kits, local warehouse strategy.)</li>
+                                <li><strong>Risk 6: Reverse Logistics / Disposal Costs.</strong> (Mitigation: Contracts with recycling processors from EOL planning.)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customs & Clearance -->
+                <div class="card card-yellow p-6">
+                    <h3 class="text-xl font-bold mb-4 flex items-center text-[#FFCC00]">
+                        <span class="bg-yellow-100 text-[#FFCC00] w-8 h-8 flex items-center justify-center rounded-full mr-3 text-sm font-bold">4</span>
+                        Customs & Clearance Analysis (Egypt)
+                    </h3>
+                    <p class="text-sm text-slate-600 space-y-2">
+                        <i class="fas fa-file-invoice mr-2 text-slate-400"></i>
+                        Requires certified freight forwarders. Ports like Sokhna use advanced electronic systems but demand precise documentation (CoC, Packing Lists, OEM Technical Docs).
+                    </p>
+                    <p class="text-sm text-slate-600 space-y-2">
+                        <i class="fas fa-warehouse mr-2 text-slate-400"></i>
+                        Regimes:Temporary Import or bonded regimes should be used for parts planned for re-export (tools, repairables) using ATA Carnets or warehousing. Misclassification leads to severe delays and fees.
+                    </p>
+                </div>
+            </div>
+
+            <!--  Incoterms & Main Problems -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <!-- Incoterms -->
+                <div class="card card-teal p-6">
+                    <h3 class="text-xl font-bold mb-4 flex items-center text-[#00C2CB]">
+                        <span class="bg-teal-100 text-[#00C2CB] w-8 h-8 flex items-center justify-center rounded-full mr-3 text-sm font-bold">5</span>
+                        Incoterms & Delivery Responsibilities
+                    </h3>
+                    <table class="w-full text-sm text-left mb-4">
+                        <thead class="bg-slate-50 text-slate-500 uppercase"><tr><th class="p-2">Term</th><th class="p-2">Usage</th><th class="p-2">Key Requirement</th></tr></thead>
+                        <tbody class="divide-y">
+                            <tr><td class="p-2 font-bold">CPT/CIP</td><td class="p-2">Preferred (Control)</td><td class="p-2">More control over carriage and risk transfer.</td></tr>
+                            <tr class="bg-yellow-50"><td class="p-2 font-bold text-[#0057D9]">DAP</td><td class="p-2">ODC (Recommended)</td><td class="p-2 font-bold text-[#0057D9]">Buyer (developer) uses DAP to site; forwarder handles customs.</td></tr>
+                        </tbody>
+                    </table>
+                    <p class="text-xs text-slate-600 mt-2">
+                        Contractual Need: Must include demurrage/detention caps, contingency allocation for re-sequences, EOL disposal costs, and clear Spare Parts SLA (airlift clauses).
+                    </p>
+                </div>
+
+                <!--  Main Problems -->
+                 <div class="card card-red p-6">
+                    <h3 class="text-xl font-bold mb-4 flex items-center text-[#EF4444]">
+                        <span class="bg-red-100 text-[#EF4444] w-8 h-8 flex items-center justify-center rounded-full mr-3 text-sm font-bold">6</span>
+                        Main Problems, Gaps & Vulnerabilities (Prioritized)
+                    </h3>
+                    <ul class="list-disc pl-5 text-sm space-y-2">
+                        <li class="font-bold">Grid Readiness Mismatch <span class="text-red-600">(Project-Critical)</span></li>
+                        <li>Underestimated Reverse Logistics / EOL Liabilities.</li>
+                        <li>Port Storage & Yard Capacity Mismatch.</li>
+                        <li>Fragmented Responsibility in Contracts.</li>
+                        <li>Incomplete Route & Structural Surveys.</li>
+                        <li>Local Recycling & Waste-Processing Gap.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 3: EXECUTION & METRICS -->
+        <!-- ========================================== -->
+        <div class="tab-content hidden" id="tab-execution">
+            <h2 class="text-2xl font-black mb-6 text-[#0057D9]"><i class="fas fa-cogs mr-2"></i> Phase III: Execution, KM & Metrics (7-11, 15, 17)</h2>
+
+            <!-- Knowledge Management &  Manuals -->
+            <div class="card card-teal p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4 flex items-center text-[#00C2CB]">
+                    <span class="bg-teal-100 text-[#00C2CB] w-8 h-8 flex items-center justify-center rounded-full mr-3 text-sm font-bold">7/8</span>
+                    Knowledge Management, Governance & Manuals
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- KM Governance (7) -->
+                    <div>
+                        <h4 class="font-bold text-slate-700 mb-2">7. Data Quality (DQ) Governance Rules</h4>
+                        <div class="accordion-header flex justify-between items-center text-sm font-bold bg-yellow-50" data-target="dq_detail">
+                            <span>Click to view 5 DQ Standards (Accuracy, Validity, etc.)</span>
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </div>
+                        <div class="accordion-content hidden" id="dq_detail">
+                            <ul class="list-disc pl-5 text-xs space-y-2">
+                                <li><strong>Accuracy (Wind Speed):</strong> Validation vs. satellite models ($< 1\%$ bias error). Failure $\to$ impacts LCOE.</li>
+                                <li><strong>Completeness (SCADA Downtime):</strong> Mandatory completion of 4 fields (Fault Code, Downtime). Failure $\to$ inaccurate Availability Factor.</li>
+                                <li><strong>Consistency (Exchange Rate):</strong> Must use CBE official rate at financial close. Failure $\to$ misleading project cost.</li>
+                                <li><strong>Timeliness (Performance Data):</strong> Submission to EETC within 30 minutes of interval. Failure $\to$ regulatory non-compliance.</li>
+                                <li><strong>Validity (Turbine Hub Height):</strong> Digital models must use discrete OEM value. Failure $\to$ AEP modeling error.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Manuals -->
+                    <div>
+                        <h4 class="font-bold text-slate-700 mb-2">8. Manuals & Guidelines (5 Manual Types)</h4>
+                        <ul class="list-disc pl-5 text-sm space-y-1">
+                            <li>Manuals: Operation, Maintenance, Technical (Diagrams), Safety, Installation/Commissioning.</li>
+                            <li>Guidelines (High-Level): Maintenance Intervals (Predictive Monitoring), Safety (PPE, LOTO), Environmental (Waste Disposal).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- 1 PERT & Implementation -->
+                <div class="card card-yellow p-6 lg:col-span-2">
+                    <h3 class="text-xl font-bold mb-4 flex items-center text-[#FFCC00]">
+                        <span class="bg-yellow-100 text-[#FFCC00] w-8 h-8 flex items-center justify-center rounded-full mr-3 text-sm font-bold">11/15</span>
+                        PERT & Implementation Plan
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="implementationChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-slate-600 mt-4">
+                        Critical Path (PERT): Customs Clearance and MOT Permit Acquisition are the primary drivers of project schedule variance. Contingency must cover potential delays here.
+                    </p>
+                </div>
+
+                <!--  Resource Allocation -->
+                <div class="card card-blue p-6">
+                    <h3 class="text-xl font-bold mb-4 flex items-center text-[#0057D9]">
+                        <span class="bg-blue-100 text-[#0057D9] w-8 h-8 flex items-center justify-center rounded-full mr-3 text-sm font-bold">10</span>
+                        Resource Allocation
+                    </h3>
+                    <div class="chart-container" style="height: 250px">
+                        <canvas id="resourceChart"></canvas>
+                    </div>
+                    <ul class="list-disc pl-5 text-xs space-y-1 mt-3">
+                        <li><strong>Human:</strong> Shift from high-volume temporary construction labor to small, permanent local O&M team.</li>
+                        <li><strong>Equipment:</strong> High-capacity crane availability is the primary bottleneck for erection rate.</li>
+                        <li><strong>Capital:</strong> CAPEX is front-loaded (turbine procurement). Contingency Budget maintained against PERT risks.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--  Team KPIs & 17. Compliance -->
+            <div class="card card-teal p-6">
+                <h3 class="text-xl font-bold mb-4 flex items-center text-[#00C2CB]">
+                    <span class="bg-teal-100 text-[#00C2CB] w-8 h-8 flex items-center justify-center rounded-full mr-3 text-sm font-bold">9</span>
+                    Team KPIs & Reporting Formats
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                    <div>
+                        <h4 class="font-bold text-slate-700 mb-2">Construction & Quality KPIs</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>Safety: Zero Lost Time Incidents.</li>
+                            <li>Schedule: Milestone Completion Variance $< 5\%$ deviation.</li>
+                            <li>Quality: QC Pass Rate $> 98\%$ on first inspection.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-700 mb-2">Operation & Maintenance KPIs</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>Reliability: Technical Availability Factor $> 97\%$.</li>
+                            <li>Output: Net Capacity Factor meets Project Specific Target.</li>
+                            <li>Speed: Corrective Maintenance Response Time $< 4$ hours.</li>
+                        </ul>
+                    </div>
+                    <div class="md:col-span-2">
+                        <h4 class="font-bold text-slate-700 mb-2">Reporting Formats</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-xs">
+                            <li>Weekly Progress Report (Tactical: Site management, short-term risk).</li>
+                            <li>Monthly Executive Report (Strategic: Financials, full KPI analysis).</li>
+                            <li>Quarterly Audit Report (Formal: EETC, compliance, lenders).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card card-red p-6 mt-6">
+                 <h3 class="text-xl font-bold mb-4 flex items-center text-[#EF4444]">
+                    <span class="bg-red-100 text-[#EF4444] w-8 h-8 flex items-center justify-center rounded-full mr-3 text-sm font-bold">17</span>
+                    Compliance Matrix (Key Risks)
+                </h3>
+                <table class="w-full text-sm">
+                    <thead class="bg-slate-50 text-left"><tr><th class="p-2">Domain</th><th class="p-2">Regulation</th><th class="p-2">Consequence</th></tr></thead>
+                    <tbody class="divide-y">
+                        <tr><td class="p-2 font-bold">Customs</td><td class="p-2">ACI Filing</td><td class="p-2 text-red-600">Cargo Rejection</td></tr>
+                        <tr><td class="p-2 font-bold">Transport</td><td class="p-2">MOT Permits</td><td class="p-2 text-red-600">Truck Seizure/Route Block</td></tr>
+                        <tr><td class="p-2 font-bold">Environment</td><td class="p-2">EEAA Approvals</td><td class="p-2 text-orange-600">Site Work Halted</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 4: LIFECYCLE & GOVERNANCE  -->
+        <!-- ========================================== -->
+        <div class="tab-content hidden" id="tab-lifecycle">
+            <h2 class="text-2xl font-black mb-6 text-[#0057D9]"><i class="fas fa-handshake mr-2"></i> Phase IV: Lifecycle & Governance (12, 13, 14)</h2>
+
+            <!--  Maint. & Reverse Logistics -->
+            <div class="card card-blue p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4 flex items-center text-[#0057D9]">
+                    <span class="bg-blue-100 text-[#0057D9] w-8 h-8 flex items-center justify-center rounded-full mr-3 text-sm font-bold">12</span>
+                    Maintenance Strategy & Reverse Logistics
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-bold text-slate-700 mb-2">Maintenance Strategy</h4>
+                        <ul class="text-sm space-y-1 list-disc pl-5">
+                            <li><strong>Preventative (PM):</strong> Scheduled servicing (annual, oil changes) following OEM protocols.</li>
+                            <li><strong>Predictive (PdM):</strong> Data-driven using vibration sensors to forecast failure and reduce unplanned downtime.</li>
+                            <li><strong>Corrective (CM):</strong> Unplanned repairs governed by Corrective Maintenance Response Time KPI.</li>
+                        </ul>
+                        <h4 class="font-bold text-slate-700 mt-4 mb-2">Reverse Components</h4>
+                        <p class="text-xs text-slate-500">Gearboxes, Generators, Blades (cracked), Yaw/Pitch motors, Control boards, Sensors, Transformers.</p>
+                    </div>
+                    <div>
+                        <div class="accordion-header flex justify-between items-center text-sm font-bold bg-blue-50" data-target="reverse_logistics">
+                            <span>Click to view 7-Step Reverse Logistics Process Flow</span>
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </div>
+                        <div class="accordion-content hidden" id="reverse_logistics">
+                            <ol class="list-decimal pl-5 text-xs space-y-1">
+                                <li>Failure Identification (SCADA/Techs)</li>
+                                <li>Removal & On-Site Assessment (Repairable, Refurbish, Scrap)</li>
+                                <li>Packaging & Documentation (Serial \#, Failure Desc, Warranty)</li>
+                                <li>Transport to Repair (Local/Global hubs - requires ODC permits)</li>
+                                <li>Repair / Refurbishment / Testing</li>
+                                <li>Reintegration into Inventory (CMMS Update)</li>
+                                <li>Disposal or Recycling (Steel/Copper/Al to local recyclers, Blades to cement kilns/landfill).</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 13. Decommissioning & 14. SLA -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- 13. Decomm. -->
+                <div class="card card-teal p-6 lg:col-span-1">
+                    <h3 class="text-xl font-bold mb-4 flex items-center text-[#00C2CB]">
+                        <span class="bg-teal-100 text-[#00C2CB] w-8 h-8 flex items-center justify-center rounded-full mr-3 text-sm font-bold">13</span>
+                        De-commissioning Plan
+                    </h3>
+                    <div class="chart-container" style="height: 200px">
+                        <canvas id="decommissionChart"></canvas>
+                    </div>
+                    <p class="text-xs text-slate-600 mt-2">
+                        Challenge:Local recycling capacity gap for composite blades is a systemic vulnerability. EOL planning must budget for this.
+                    </p>
+                </div>
+
+                <!--  SLA & Communication -->
+                <div class="card card-yellow p-6 lg:col-span-2">
+                    <h3 class="text-xl font-bold mb-4 flex items-center text-[#FFCC00]">
+                        <span class="bg-yellow-100 text-[#FFCC00] w-8 h-8 flex items-center justify-center rounded-full mr-3 text-sm font-bold">14</span>
+                        SLA & Communication Plan
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- SLAs -->
+                        <div class="text-sm space-y-2">
+                            <h4 class="font-bold text-slate-700 mb-1">Key SLAs & Clauses</h4>
+                            <p class="p-2 bg-blue-50 rounded"><i class="fas fa-gavel mr-2 text-[#0057D9]"></i> **Customs Clearance Time:** $\le 7$ calendar days (Target).</p>
+                            <p class="p-2 bg-blue-50 rounded"><i class="fas fa-shipping-fast mr-2 text-[#0057D9]"></i> **Delivery Reliability:** $> 98\%$ on-time (window agreed).</p>
+                            <p class="p-2 bg-blue-50 rounded"><i class="fas fa-parachute-box mr-2 text-[#0057D9]"></i> **Spare Parts:** Express replacement within $24-72$ hours.</p>
+                        </div>
+                        <!-- Escalation -->
+                        <div class="text-sm space-y-2">
+                            <h4 class="font-bold text-slate-700 mb-1">Escalation Matrix (2.3)</h4>
+                            <p class="p-2 bg-slate-50 rounded"><strong class="text-[#00C2CB]">Level 1 (Coordinator):</strong> Minor Delays. Response $\le 2$ hours.</p>
+                            <p class="p-2 bg-slate-50 rounded"><strong class="text-[#FFCC00]">Level 2 (Manager):</strong> Permit Issues, Vessel Delays. Response $\le 12$ hours.</p>
+                            <p class="p-2 bg-red-50 rounded"><strong class="text-red-600">Level 3 (Director):</strong> Demurrage $> 48$ hours, HSSE Major. **Immediate** response.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tool: Gemini Insight Generator -->
+        <section class="mt-12 bg-white rounded-xl shadow-lg p-8 border border-slate-200">
+            <h3 class="text-2xl font-bold text-[#0057D9] mb-2 flex items-center">
+                <i class="fas fa-robot mr-3"></i> Research Assistant (Gemini API)
+            </h3>
+            <p class="text-slate-600 mb-6">Use AI to query specific logistics regulations or market trends with Google Search grounding.</p>
+            
+            <div class="flex flex-col md:flex-row gap-4 mb-6">
+                <input type="text" id="insightQuery" class="flex-1 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0057D9] outline-none" placeholder="e.g., Current ODC permit lead times in Egypt">
+                <button id="generateInsightBtn" class="bg-[#FFCC00] text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-400 transition shadow-md flex items-center justify-center">
+                    <span>Generate Insight</span>
+                    <i id="spinner" class="fas fa-spinner fa-spin ml-2 hidden"></i>
+                </button>
+            </div>
+            
+            <div id="insightResult" class="bg-slate-50 p-6 rounded-lg border border-slate-200 hidden">
+                <h4 class="font-bold text-slate-700 mb-2">Research Summary:</h4>
+                <p id="insightText" class="text-slate-600 text-sm leading-relaxed"></p>
+                <div id="insightSources" class="mt-4 pt-4 border-t border-slate-200 text-xs text-slate-500"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-white text-center py-8 mt-12">
+        <p class="text-sm opacity-60">&copy; 2025 Strategic Wind Logistics Thesis. DHL Collaborative Project.</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        
+        function splitLabel(str) {
+            if (str.length <= 16) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + " " + words[i]).length < 16) {
+                    currentLine += " " + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        title: (items) => {
+                            const label = items[0].label;
+                            return Array.isArray(label) ? label.join(' ') : label;
+                        }
+                    }
+                }
+            }
+        };
+
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Accordion Toggle Logic ---
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                header.addEventListener('click', (e) => {
+                    // Find the closest parent header that has the data-target attribute, in case the click is on the icon.
+                    const targetElement = e.target.closest('.accordion-header');
+                    if (!targetElement) return;
+
+                    const targetId = targetElement.getAttribute('data-target');
+                    const content = document.getElementById(targetId);
+                    // Query for the icon relative to the actual header element that was clicked
+                    const icon = targetElement.querySelector('i');
+
+                    if (!content || !icon) return; // Safety check
+
+                    if (content.classList.contains('hidden')) {
+                        content.classList.remove('hidden');
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    } else {
+                        content.classList.add('hidden');
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    }
+                });
+            });
+
+            // --- Tab Control Logic ---
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const targetTab = e.target.dataset.tab;
+
+                    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.add('hidden');
+                    });
+
+                    document.getElementById(`tab-${targetTab}`).classList.remove('hidden');
+                });
+            });
+
+
+            // Initialize first tab view
+            document.getElementById('tab-strategy').classList.remove('hidden');
+
+            // --- Charts Initialization ---
+            
+            // Chart 1: Regional Context
+            new Chart(document.getElementById('regionalContextChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Egypt (2035)', 'Morocco (2030)', 'Algeria (2030)'],
+                    datasets: [{
+                        label: 'Target Capacity (GW)',
+                        data: [14.0, 5.2, 0.59], /* Updated Algeria capacity to 0.59 GW */
+                        backgroundColor: ['#0057D9', '#00C2CB', '#FFCC00'],
+                        borderRadius: 4
+                    }]
+                },
+                options: commonOptions
+            });
+
+            // Chart 10: Resource Allocation
+            new Chart(document.getElementById('resourceChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Heavy Haulage', 'Cranes', 'Customs Team', 'Surveyors'],
+                    datasets: [{
+                        data: [45, 30, 15, 10],
+                        backgroundColor: ['#0057D9', '#00C2CB', '#FFCC00', '#94a3b8'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { ...commonOptions, cutout: '70%', plugins: { legend: { position: 'right' } } }
+            });
+
+            // Chart 11: Implementation (Gantt-ish)
+            new Chart(document.getElementById('implementationChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Planning', 'Procurement', 'Shipping', 'Customs', 'Transport', 'Install'],
+                    datasets: [{
+
+                        label: 'Months',
+                        data: [[0,2], [2,5], [5,7], [7,8.5], [8.5,10], [10,12]],
+                        backgroundColor: '#0057D9',
+                        borderRadius: 4,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    indexAxis: 'y',
+                    scales: { x: { min: 0, max: 13, title: {display:true, text:'Project Month'} } }
+                }
+            });
+
+            // Chart 13: Decommissioning
+            new Chart(document.getElementById('decommissionChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Steel (Recycle)', 'Concrete (Crush)', 'Fiberglass (Landfill)', 'Copper'],
+                    datasets: [{
+                        data: [65, 15, 15, 5],
+                        backgroundColor: ['#0057D9', '#94a3b8', '#EF4444', '#FFCC00'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { ...commonOptions, cutout: '60%', plugins: { legend: { position: 'right' } } }
+            });
+
+            // Chart 16: PESTEL
+            new Chart(document.getElementById('pestelChart'), {
+                type: 'radar',
+                data: {
+                    labels: ['Political', 'Economic', 'Social', 'Tech', 'Legal', 'Env'],
+                    datasets: [{
+                        label: 'Risk Score (1-10)',
+                        data: [6, 9, 5, 7, 10, 4],
+                        backgroundColor: 'rgba(0, 87, 217, 0.2)',
+                        borderColor: '#0057D9',
+                        pointBackgroundColor: '#FFCC00'
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    scales: { r: { suggestedMin: 0, suggestedMax: 10 } }
+                }
+            });
+
+            // --- Gemini API Logic ---
+            const apiKey = ""; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+            document.getElementById('generateInsightBtn').addEventListener('click', async () => {
+                const query = document.getElementById('insightQuery').value;
+                const btn = document.getElementById('generateInsightBtn');
+                const spinner = document.getElementById('spinner');
+                const resultArea = document.getElementById('insightResult');
+                const resultText = document.getElementById('insightText');
+                const sourceArea = document.getElementById('insightSources');
+
+                if (!query) return;
+
+                // State: Loading
+                btn.disabled = true;
+                spinner.classList.remove('hidden');
+                resultArea.classList.add('hidden');
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: query }] }],
+                            tools: [{ "google_search": {} }]
+                        })
+                    });
+
+                    const data = await response.json();
+                    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "No insight generated.";
+                    
+                    // Grounding logic
+                    const sources = data.candidates?.[0]?.groundingMetadata?.groundingAttributions || [];
+                    
+                    resultText.innerHTML = text;
+                    sourceArea.innerHTML = sources.length 
+                        ? `<strong>Sources:</strong> ${sources.map(s => `<a href="${s.web.uri}" target="_blank" class="text-blue-600 underline ml-1">${s.web.title}</a>`).join(', ')}`
+
+                        : '';
+                    
+                    resultArea.classList.remove('hidden');
+
+                } catch (e) {
+                    resultText.innerHTML = "Error generating insight. Check console for details.";
+                    resultArea.classList.remove('hidden');
+                } finally {
+                    btn.disabled = false;
+                    spinner.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
